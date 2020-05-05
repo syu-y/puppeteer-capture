@@ -10,9 +10,26 @@ provider:
     STAGE: ${self:provider.stage}
     PREFIX: ${self:service}-${self:provider.stage}
     CAPTURE_LAYER: ${self:provider.environment.PREFIX}-capture-layer
+    CAPTURE_BUCKET: ${self:provider.environment.PREFIX}-capture-bucket
+  iamRoleStatements:
+    # S3の設定
+    - Effect: Allow
+      Action:
+        - 's3:PutObject'
+        - 's3:PutObjectAcl'
+      Resource: 'arn:aws:s3:::${self:provider.environment.PREFIX}*'
+# ローカルでの動作用設定
+custom:
+  defaultStage: dev
+  s3:
+    port: 8081
+    directory: .s3
+    cors: false
 # 使用するプラグイン
 plugins:
   - serverless-webpack
+  - serverless-offline
+  - serverless-s3-local
 # 関数の設定
 functions:
   captureFunction:
@@ -24,3 +41,10 @@ layers:
   CaptureLayer:
     path: layers
     name: ${self:provider.environment.CAPTURE_LAYER}
+# リソースの設定
+resources:
+  Resources:
+    CaptureBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.CAPTURE_BUCKET}
