@@ -13,7 +13,7 @@ module.exports = {
     path: path.join(__dirname, '.webpack'),
   },
   target: 'node',
-  externals: ['chrome-aws-lambda'],
+  externals: ['chrome-aws-lambda', 'aws-sdk'],
   module: {
     rules: [
       {
