@@ -1,0 +1,26 @@
+service: puppeteer-capture
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-northeast-1
+  profile: private
+  stage: dev
+  # テーブル名やバケット名など環境変数
+  environment:
+    STAGE: ${self:provider.stage}
+    PREFIX: ${self:service}-${self:provider.stage}
+    CAPTURE_LAYER: ${self:provider.environment.PREFIX}-capture-layer
+# 使用するプラグイン
+plugins:
+  - serverless-webpack
+# 関数の設定
+functions:
+  captureFunction:
+    handler: handler.captureFunction
+    layers:
+      - { Ref: CaptureLayerLambdaLayer }
+# Layerの設定
+layers:
+  CaptureLayer:
+    path: layers
+    name: ${self:provider.environment.CAPTURE_LAYER}
