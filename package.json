@@ -2,7 +2,7 @@
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
-    "aws-sdk": "^2.669.0",
+    "aws-sdk": "^2.814.0",
     "babel-loader": "^8.1.0",
     "puppeteer": "^3.0.2",
     "serverless-offline": "^6.1.5",
